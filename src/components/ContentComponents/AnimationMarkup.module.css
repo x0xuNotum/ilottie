@@ -1,0 +1,11 @@
+.outer-container-scrollable {
+  overflow-y: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.inner-container-scrollable {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}

@@ -1,0 +1,666 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "additionalProperties": false,
+  "title": "The root schema",
+  "description": "Structure of the iLottie YAML file",
+  "definitions": {
+    "action": {
+      "$id": "#action",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["show", "hide", "play", "pause"],
+          "default": ""
+        },
+        "components": {
+          "anyOf": [
+            {
+              "type": "array",
+              "minItems": 1,
+              "default": "''",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "default": "''",
+              "type": "string"
+            }
+          ]
+        },
+        "delay": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "playingTurn": {
+          "type": "string",
+          "enum": ["playWithPrevious", "playAfterPrevious"]
+        },
+        "animationFunction": {
+          "type": "string",
+          "enum": ["ease-in", "linear", "logarithmic"]
+        },
+        "animationDuration": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "segments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "string",
+              "enum": ["Infinity"]
+            }
+          ]
+        }
+      },
+      "required": ["type", "components"]
+    },
+    "coupledAction": {
+      "$id": "#coupledAction",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["seek"],
+          "default": "seek"
+        },
+        "components": {
+          "anyOf": [
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": []
+        },
+        "position": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "integer"
+              }
+            },
+            "y": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "segments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      },
+      "required": ["type", "components"]
+    },
+    "displayAction": {
+      "$id": "#displayAction",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["show", "hide"],
+          "default": "show"
+        },
+        "components": {
+          "anyOf": [
+            {
+              "type": "array",
+              "minItems": 1,
+              "default": "''",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "default": "''",
+              "type": "string"
+            }
+          ]
+        },
+        "delay": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "playingTurn": {
+          "type": "string",
+          "enum": ["playWithPrevious", "playAfterPrevious"]
+        },
+        "animationFunction": {
+          "type": "string",
+          "enum": ["ease-in", "linear", "logarithmic"]
+        },
+        "animationDuration": {
+          "type": "integer",
+          "description": "Duration of the animation",
+          "minimum": 0
+        }
+      },
+      "required": ["type", "components"]
+    },
+    "resourceGeneral": {
+      "$id": "#resourceGeneral",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["svg", "png", "jpg", "mp3", "mp4", "markup", "lottie"]
+        },
+        "src": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "type", "src"]
+    },
+    "resourceFont": {
+      "$id": "#resourceFont",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["font"]
+        },
+        "src": {
+          "type": "string"
+        },
+        "fontFace": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "font-family": {
+              "type": "string"
+            },
+            "src": {
+              "type": "string"
+            },
+            "unicode-range": {
+              "type": "string"
+            },
+            "font-stretch": {
+              "type": "string"
+            },
+            "font-weight": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                }
+              ]
+            },
+            "font-style": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": ["name", "type", "src"]
+    },
+    "playAction": {
+      "$id": "#playbackAction",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["play"],
+          "default": "play"
+        },
+        "components": {
+          "anyOf": [
+            {
+              "type": "array",
+              "minItems": 1,
+              "default": "''",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "default": "''",
+              "type": "string"
+            }
+          ]
+        },
+        "delay": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "playingTurn": {
+          "type": "string",
+          "enum": ["playWithPrevious", "playAfterPrevious"]
+        },
+        "segments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "string",
+              "enum": ["Infinity"]
+            }
+          ]
+        },
+        "playbackSpeed": {
+          "type": "integer",
+          "minimum": 1,
+          "title": "playbackSpeed",
+          "description": "Specify desired speed of animation playback.",
+          "default": 1
+        },
+        "volumeUpFunction": {
+          "type": "string",
+          "title": "playbackSpeed",
+          "description": "Specify volume profile at the beginning of the playback.",
+          "enum": ["linear", "logarithmic", "instant"],
+          "default": "instant"
+        },
+          "volumeUpAnimationDuration": {
+            "type": "integer",
+            "title": "volumeUpAnimationDuration",
+            "description": "Defines how long will the volume increase take(from 0 to 100%).",
+            "default": 0,
+            "minimum": 0
+          }
+      },
+      "required": ["type", "components"]
+    },
+    "pauseAction": {
+      "$id": "#playbackAction",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["pause"],
+          "default": "pause"
+        },
+        "components": {
+          "anyOf": [
+            {
+              "type": "array",
+              "minItems": 1,
+              "default": "''",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "default": "''",
+              "type": "string"
+            }
+          ]
+        },
+        "delay": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "playingTurn": {
+          "type": "string",
+          "enum": ["playWithPrevious", "playAfterPrevious"]
+        },
+        "volumeDownFunction": {
+          "type": "string",
+          "title": "playbackSpeed",
+          "description": "Specify volume profile at the beginning of the playback.",
+          "enum": ["linear", "logarithmic", "instant"],
+          "default": "instant"
+        },
+        "volumeDownAnimationDuration": {
+          "type": "integer",
+          "title": "volumeDownAnimationDuration",
+          "description": "Defines how long will the volume decrease take(from 100% to 0).",
+          "default": 0,
+          "minimum": 0
+        }
+      },
+      "required": ["type", "components"]
+    },
+    "setStylesAction": {
+      "$id": "#setStylesAction",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["setStyles"],
+          "default": "setStyles"
+        },
+        "components": {
+          "anyOf": [
+            {
+              "type": "array",
+              "minItems": 1,
+              "default": "''",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "default": "''",
+              "type": "string"
+            }
+          ]
+        },
+        "delay": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "playingTurn": {
+          "type": "string",
+          "enum": ["playWithPrevious", "playAfterPrevious"]
+        },
+        "styles": {
+          "type": "object",
+          "description": "CSS-styles object. Can only be used with setStyles action type."
+        }
+      },
+      "required": ["type", "components"]
+    },
+    "listOfActions": {
+      "$id": "#listOfActions",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/setStylesAction"
+          },
+          {
+            "$ref": "#/definitions/displayAction"
+          },
+          {
+            "$ref": "#/definitions/playAction"
+          },
+          {
+            "$ref": "#/definitions/pauseAction"
+          }
+        ]
+      }
+    },
+    "positionRectangle": {
+      "$id": "#positionRectangle",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["x", "y", "width", "height"]
+    }
+  },
+  "required": [
+      "surfaceWidth",
+      "surfaceHeight",
+      "externalValueLimit",
+      "onExternalValue",
+      "resources",
+      "components"
+  ],
+  "properties": {
+      "surfaceWidth": {
+          "$id": "#/properties/surfaceWidth",
+          "type": "integer",
+          "title": "surfaceWidth",
+          "description": "Width of the iLottie safety area.",
+          "default": 1920,
+          "minimum": 0,
+          "examples": [
+            1920
+          ]
+        },
+      "surfaceHeight": {
+        "$id": "#/properties/surfaceHeight",
+        "type": "integer",
+        "minimum": 0,
+        "title": "surfaceHeight",
+        "description": "Height of the iLottie safety area.",
+        "default": 1080,
+        "examples": [
+            1080
+        ]
+      },
+      "externalValueLimit": {
+          "$id": "#/properties/externalValueLimit",
+          "type": "integer",
+          "title": "externalValueLimit",
+          "description": "Upper limit for the external value",
+          "default": 1000,
+          "examples": [
+              1000
+          ]
+      },
+      "languages": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "onExternalValue": {
+        "$id": "#/properties/onExtenralValue",
+        "type": "array",
+        "title": "onExternalValue",
+        "description": "Actions run when external value changes",
+        "default": [],
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "range": {
+              "type": "array",
+              "default": "",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "integer"
+              }
+            },
+            "onRangeEnter": {
+              "type": "array",
+              "default": [],
+              "minItems": 1,
+              "$ref": "#/definitions/listOfActions"
+            },
+            "onRangeLeave": {
+              "type": "array",
+              "default": [],
+              "minItems": 1,
+              "$ref": "#/definitions/listOfActions"
+            },
+            "onCoupledChange": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/coupledAction"
+              }
+            }
+          },
+          "required": ["range"]
+        }
+      },
+      "resources": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/resourceGeneral"
+            },
+            {
+              "$ref": "#/definitions/resourceFont"
+            }
+          ]
+        }
+      },
+      "components": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "resource": {
+                  "type": "string"
+                }
+              },
+              "required": ["name", "resource"]
+            },
+            {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": ""
+              },
+              "posRect": {
+                "type": "object",
+                "$ref": "#/definitions/positionRectangle"
+              },
+              "zIndex": {
+                "type": "integer",
+                "default": 0
+              },
+              "resource": {
+                "type": "string"
+              },
+              "onClick": {
+                "type": "array",
+                "$ref": "#/definitions/listOfActions"
+              },
+              "onSecondClick": {
+                "type": "array",
+                "$ref": "#/definitions/listOfActions"
+                },
+              "onHoverIn": {
+                "type": "array",
+                "$ref": "#/definitions/listOfActions"
+                },
+              "onHoverOut": {
+                "type": "array",
+                "$ref": "#/definitions/listOfActions"
+                },
+              "onShow": {
+                "type": "array",
+                "$ref": "#/definitions/listOfActions"
+                },
+              "onHide": {
+                "type": "array",
+                "$ref": "#/definitions/listOfActions"
+                },
+              "onPlay": {
+                "type": "array",
+                "$ref": "#/definitions/listOfActions"
+                },
+              "onCursorPositionChange": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "$ref": "#/definitions/coupledAction"
+                }
+              },
+              "fluidFont": {
+                "type": "boolean"
+              },
+              "style": {
+                "type": "object"
+              },
+              "overflowScroll": {
+                "type": "boolean"
+              }
+            },
+            "required": ["name", "resource", "posRect", "zIndex"]
+          }
+        ]
+      }
+    }
+  }
+}

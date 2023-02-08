@@ -1,0 +1,52 @@
+import React from 'react';
+import { Action, AudioAction } from 'schemas/actions';
+import { AnimationComponent } from 'schemas/component';
+import { NumbersTuple } from 'schemas/helpers';
+import { EventEmitter, ILottieEvent } from 'stores/contextStores/eventEmitter';
+import { ExternalValueStore } from 'stores/contextStores/externalValueStore';
+import { RunningActionsStore } from 'stores/contextStores/runningActions';
+import { VolumeStore } from 'stores/contextStores/volumeStore';
+import { Deferred } from 'utils/promise';
+interface IVideoPlayer {
+    data: AnimationComponent;
+    src: string;
+    resourcesLoadDeferredObj: Deferred<unknown>;
+}
+export declare class AnimationVideo extends React.Component<IVideoPlayer> {
+    subscriptions: Array<() => void>;
+    playbackSpeed: number;
+    loopCount: number;
+    paused: boolean;
+    seek: boolean;
+    normalizedScrollPosition: number;
+    static contextType: React.Context<import("../../stores/contextStores").ContextStore>;
+    get eventEmitter(): EventEmitter;
+    get runningActionsStore(): RunningActionsStore;
+    get volumeStore(): VolumeStore;
+    get externalValueStore(): ExternalValueStore;
+    render(): JSX.Element;
+    componentDidMount(): void;
+    componentWillUnmount(): void;
+    unsubscribeFromAllEvents(): void;
+    subscribeForEvent<T extends Action>(type: string, cb: (args: T) => void | Promise<void>): void;
+    emitComplete(): void;
+    handlePlayAction(action: AudioAction): Promise<void>;
+    setPlaybackSpeed(action: AudioAction): void;
+    completeRunningActions(): Promise<void>;
+    completeCallback(actionCount: number, accept: Function, event: ILottieEvent): void;
+    completeInterruptedAction(accept: Function, event: ILottieEvent): void;
+    playAnimationOrComplete(actionCount: number, accept: Function): void;
+    play(): Promise<void>;
+    handlePauseAction(): Promise<void>;
+    resetAnimationsCount(): void;
+    setLoopCount(value: number): void;
+    incrementAnimationCount(): void;
+    videoEnded(): void;
+    videoStarted(): void;
+    playStateChanged(): void;
+    setPaused(value: boolean): void;
+    handleSeekAction(event: ILottieEvent): void;
+    setSeek(value: boolean): void;
+    setNormalizedScrollPosition(range?: NumbersTuple): number | undefined;
+}
+export {};

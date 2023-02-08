@@ -1,0 +1,24 @@
+surfaceWidth: 1920
+surfaceHeight: 1080
+externalValueLimit: 1000
+onExternalValue:
+  - range: [0, 1000]
+    onRangeEnter:
+      - type: 
+        components: []
+    onRangeLeave:
+      - type: 
+        components: []
+    onCoupledChange:
+      - type: seek
+        components: []
+        segments: [[]]
+resources:
+  - name: 
+    type: 
+    src: 
+components:
+  - name: 
+    posRect: { x: 0, y: 0, width: 0, height: 0 }
+    zIndex: 1
+    resource: 
