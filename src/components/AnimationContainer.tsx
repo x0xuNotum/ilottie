@@ -302,6 +302,7 @@ class AnimationContainer extends React.Component<AnimationContainerProps> {
     this.processStyleResources()
     await Promise.allSettled(this.resourcesStore.dataPromises)
     if (this.resourcesStore.onResourcesLoaded) {
+      console.log('LOADEEEEED-----------')
       this.resourcesStore.onResourcesLoaded()
     }
   }
