@@ -109,7 +109,7 @@ class LottieComponent extends React.Component<NewComponentProps> {
     this.animation?.addEventListener('data_ready', () => {
       this.setAnimationLastFrame()
     })
-    this.animation?.addEventListener('loaded_images', this.resolveImagesPromise)
+    this.animation?.addEventListener('DOMLoaded', this.resolveImagesPromise)
     this.animation?.addEventListener('data_failed', this.resolveImagesPromise)
     this.animation?.addEventListener('error', this.resolveImagesPromise)
     // this.animation?.addEventListener('complete', this.emitComplete)

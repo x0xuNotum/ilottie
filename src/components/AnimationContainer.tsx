@@ -212,7 +212,7 @@ class AnimationContainer extends React.Component<AnimationContainerProps> {
     ) {
       this.externalValueStore.setValue(this.props.externalValue)
       if (!this.resourcesResolved) {
-        await Promise.allSettled(this.resourcesStore.dataPromises)
+        await Promise.allSettled([...this.resourcesStore.dataPromises.values()])
       }
       await this.emitActionsOnExternalValue(
         this.externalValueStore.normalize(prevProps.externalValue)
@@ -300,9 +300,8 @@ class AnimationContainer extends React.Component<AnimationContainerProps> {
       this.createHoverTrackingHelpers(componentConfig)
     }
     this.processStyleResources()
-    await Promise.allSettled(this.resourcesStore.dataPromises)
+    await Promise.allSettled([...this.resourcesStore.dataPromises.values()])
     if (this.resourcesStore.onResourcesLoaded) {
-      console.log('LOADEEEEED-----------')
       this.resourcesStore.onResourcesLoaded()
     }
   }
